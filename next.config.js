@@ -1,6 +1,8 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   output: 'export',
+  basePath: '/Resume-Helper',
+  assetPrefix: '/Resume-Helper/',
   experimental: {
     turbo: {
       rules: {

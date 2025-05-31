@@ -2,6 +2,8 @@ import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
   output: 'export',
+  basePath: '/Resume-Helper',
+  assetPrefix: '/Resume-Helper/',
   experimental: {
     turbo: {
       rules: {
