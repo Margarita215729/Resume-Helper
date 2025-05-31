@@ -17,8 +17,14 @@ export async function POST(request: NextRequest) {
     return NextResponse.json(analysis);
   } catch (error) {
     console.error('Error analyzing job:', error);
+    console.error('Error stack:', error instanceof Error ? error.stack : 'No stack trace');
+    console.error('Error message:', error instanceof Error ? error.message : String(error));
+    
     return NextResponse.json(
-      { error: 'Failed to analyze job posting' },
+      { 
+        error: 'Failed to analyze job posting',
+        details: error instanceof Error ? error.message : String(error)
+      },
       { status: 500 }
     );
   }

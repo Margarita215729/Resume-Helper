@@ -56,41 +56,58 @@ class AIConfig {
   }
 
   static async createChatCompletion(messages: any[], options: any = {}) {
-    if (this.isGitHubModels()) {
-      // Use Azure AI Inference SDK for GitHub Models
-      const client = this.getAzureClient();
-      const modelName = this.getModelName();
+    try {
+      if (this.isGitHubModels()) {
+        // Use Azure AI Inference SDK for GitHub Models
+        console.log('Using GitHub Models with Azure AI Inference SDK');
+        const client = this.getAzureClient();
+        const modelName = this.getModelName();
+        
+        console.log('Model name:', modelName);
+        console.log('Request body:', JSON.stringify({ messages, model: modelName, ...options }, null, 2));
 
-      const response = await client.path("/chat/completions").post({
-        body: {
-          messages,
-          model: modelName,
-          ...options
-        }
-      });
-
-      if (isUnexpected(response)) {
-        throw new Error(`GitHub Models API error: ${response.body.error?.message || 'Unknown error'}`);
-      }
-
-      return {
-        choices: response.body.choices.map(choice => ({
-          message: {
-            content: choice.message.content,
-            role: choice.message.role
+        const response = await client.path("/chat/completions").post({
+          body: {
+            messages,
+            model: modelName,
+            ...options
           }
-        }))
-      };
-    } else {
-      // Use OpenAI SDK for Azure OpenAI or OpenAI
-      const client = this.getOpenAIClient();
-      const modelName = this.getModelName();
+        });
 
-      return await client.chat.completions.create({
-        model: modelName,
-        messages,
-        ...options
-      });
+        console.log('Response status:', response.status);
+        console.log('Response headers:', response.headers);
+
+        if (isUnexpected(response)) {
+          console.error('Unexpected response body:', response.body);
+          throw new Error(`GitHub Models API error: ${response.body.error?.message || 'Unknown error'}`);
+        }
+
+        console.log('Successful response body:', response.body);
+
+        return {
+          choices: response.body.choices.map(choice => ({
+            message: {
+              content: choice.message.content,
+              role: choice.message.role
+            }
+          }))
+        };
+      } else {
+        // Use OpenAI SDK for Azure OpenAI or OpenAI
+        console.log('Using OpenAI SDK');
+        const client = this.getOpenAIClient();
+        const modelName = this.getModelName();
+
+        return await client.chat.completions.create({
+          model: modelName,
+          messages,
+          ...options
+        });
+      }
+    } catch (error) {
+      console.error('AIConfig.createChatCompletion error:', error);
+      console.error('Error stack:', error instanceof Error ? error.stack : 'No stack trace');
+      throw error;
     }
   }
 }
