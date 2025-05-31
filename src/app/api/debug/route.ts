@@ -1,5 +1,9 @@
 import { NextRequest, NextResponse } from 'next/server';
 
+// Configure for static export
+export const dynamic = 'force-static';
+export const revalidate = false;
+
 export async function GET() {
   try {
     console.log('🔍 Environment Debug Test:');
@@ -44,7 +48,7 @@ export async function GET() {
       message: 'Environment check passed'
     });
     
-  } catch (error) {
+  } catch (error: any) {
     console.error('❌ Environment debug error:', error);
     return NextResponse.json(
       { 
