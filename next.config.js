@@ -1,11 +1,14 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  // Disabled static export to enable API routes for authentication and production features
-  // Server-side features like middleware, API routes, and authentication require dynamic rendering
+  // Enable server-side features for Azure Container Apps deployment
+  // API routes, middleware, and authentication require dynamic rendering
   
-  // Enable standalone output for Docker optimization
+  // Enable standalone output for Docker/Container optimization
   // This creates a self-contained build with all dependencies included
   output: 'standalone',
+  
+  // Disable static export for server-side features
+  // output: 'export', // Commented out - incompatible with API routes and auth
   
   // Turbopack configuration (stable in Next.js 15+)
   turbopack: {
