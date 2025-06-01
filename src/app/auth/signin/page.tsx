@@ -24,14 +24,26 @@ function SignInForm() {
         email,
         password,
         redirect: false,
+        callbackUrl,
       });
 
+      console.log('🔐 Sign in result:', result);
+
       if (result?.error) {
+        console.log('❌ Sign in error:', result.error);
         setError('Invalid email or password');
+      } else if (result?.ok) {
+        console.log('✅ Sign in successful, redirecting to:', callbackUrl);
+        // Force a small delay to ensure session is established
+        setTimeout(() => {
+          router.push(callbackUrl);
+          router.refresh(); // Force a refresh to update session state
+        }, 100);
       } else {
-        router.push(callbackUrl);
+        setError('Authentication failed. Please try again.');
       }
     } catch (error) {
+      console.error('🔥 Sign in error:', error);
       setError('An error occurred. Please try again.');
     } finally {
       setIsLoading(false);
