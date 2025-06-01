@@ -33,6 +33,10 @@ async function createUser(email: string, password: string, name: string) {
 
 export const { auth, signIn, signOut, handlers } = NextAuth({
   ...authConfig,
+  secret: process.env.NEXTAUTH_SECRET,
+  session: {
+    strategy: 'jwt',
+  },
   providers: [
     Credentials({
       async authorize(credentials) {
