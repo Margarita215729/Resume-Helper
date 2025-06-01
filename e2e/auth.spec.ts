@@ -53,17 +53,32 @@ test.describe('Authentication Flow', () => {
     await page.fill('input[name="password"]', 'password123');
     await page.fill('input[name="confirmPassword"]', 'password123');
     
+    // Wait for and monitor the network request
+    const responsePromise = page.waitForResponse(response => 
+      response.url().includes('/api/auth/signup') && response.status() === 201,
+      { timeout: 15000 }
+    );
+    
     await page.click('button[type="submit"]');
     
-    // Wait for navigation to complete with longer timeout for slower browsers
-    await expect(page).toHaveURL(/\/auth\/signin/, { timeout: 10000 });
+    // Wait for the API response first
+    await responsePromise;
+    
+    // Wait for navigation to complete with more flexible URL matching and longer timeout
+    await page.waitForURL(url => url.pathname === '/auth/signin', { 
+      timeout: 25000,
+      waitUntil: 'networkidle'
+    });
     
     // Verify we're on the sign-in page with success message
     await expect(page.locator('h2')).toContainText('Sign in to Resume Helper');
   });
 
   test('should display sign in page correctly', async ({ page }) => {
-    await page.goto('/auth/signin');
+    await page.goto('/auth/signin', { waitUntil: 'networkidle' });
+    
+    // Wait for page to fully load before asserting
+    await page.waitForLoadState('domcontentloaded');
     
     await expect(page.locator('h2')).toContainText('Sign in to Resume Helper');
     await expect(page.locator('input[name="email"]')).toBeVisible();
