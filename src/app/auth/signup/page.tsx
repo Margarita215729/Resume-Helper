@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
+import { useAuth } from '@/hooks/useAuth';
 
 export default function SignUpPage() {
   const [name, setName] = useState('');
@@ -12,6 +13,7 @@ export default function SignUpPage() {
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
+  const { signUp } = useAuth();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -25,20 +27,12 @@ export default function SignUpPage() {
     setIsLoading(true);
 
     try {
-      const response = await fetch('/api/auth/signup', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ name, email, password }),
-      });
+      const success = await signUp(name, email, password);
 
-      const data = await response.json();
-
-      if (response.ok) {
+      if (success) {
         router.push('/auth/signin?message=Account created successfully');
       } else {
-        setError(data.error || 'An error occurred');
+        setError('Failed to create account. Please try again.');
       }
     } catch (error) {
       setError('An error occurred. Please try again.');

@@ -295,8 +295,9 @@ export const profileQuestions: ProfileQuestion[] = [
     question: 'Rate your proficiency in programming languages',
     type: 'skill_matrix',
     matrix: {
-      items: ['JavaScript', 'Python', 'Java', 'C++', 'C#', 'TypeScript', 'PHP', 'Ruby', 'Go', 'Rust', 'Swift', 'Kotlin', 'Scala', 'R', 'MATLAB'],
-      scale: { min: 1, max: 5, labels: ['Beginner', 'Basic', 'Intermediate', 'Advanced', 'Expert'] }
+      rows: ['JavaScript', 'Python', 'Java', 'C++', 'C#', 'TypeScript', 'PHP', 'Ruby', 'Go', 'Rust', 'Swift', 'Kotlin', 'Scala', 'R', 'MATLAB'],
+      columns: ['Beginner', 'Basic', 'Intermediate', 'Advanced', 'Expert'],
+      type: 'rating'
     },
     required: false
   },
@@ -306,8 +307,9 @@ export const profileQuestions: ProfileQuestion[] = [
     question: 'Rate your proficiency in web technologies',
     type: 'skill_matrix',
     matrix: {
-      items: ['HTML/CSS', 'React', 'Angular', 'Vue.js', 'Node.js', 'Express.js', 'jQuery', 'Bootstrap', 'Tailwind CSS', 'SASS/SCSS'],
-      scale: { min: 1, max: 5, labels: ['Beginner', 'Basic', 'Intermediate', 'Advanced', 'Expert'] }
+      rows: ['HTML/CSS', 'React', 'Angular', 'Vue.js', 'Node.js', 'Express.js', 'jQuery', 'Bootstrap', 'Tailwind CSS', 'SASS/SCSS'],
+      columns: ['Beginner', 'Basic', 'Intermediate', 'Advanced', 'Expert'],
+      type: 'rating'
     },
     required: false
   },
@@ -317,8 +319,9 @@ export const profileQuestions: ProfileQuestion[] = [
     question: 'Rate your proficiency with databases',
     type: 'skill_matrix',
     matrix: {
-      items: ['MySQL', 'PostgreSQL', 'MongoDB', 'Oracle', 'SQL Server', 'SQLite', 'Redis', 'Cassandra', 'DynamoDB', 'Firebase'],
-      scale: { min: 1, max: 5, labels: ['Beginner', 'Basic', 'Intermediate', 'Advanced', 'Expert'] }
+      rows: ['MySQL', 'PostgreSQL', 'MongoDB', 'Oracle', 'SQL Server', 'SQLite', 'Redis', 'Cassandra', 'DynamoDB', 'Firebase'],
+      columns: ['Beginner', 'Basic', 'Intermediate', 'Advanced', 'Expert'],
+      type: 'rating'
     },
     required: false
   },
@@ -328,8 +331,9 @@ export const profileQuestions: ProfileQuestion[] = [
     question: 'Rate your experience with cloud platforms',
     type: 'skill_matrix',
     matrix: {
-      items: ['AWS', 'Google Cloud', 'Microsoft Azure', 'Heroku', 'DigitalOcean', 'Vercel', 'Netlify'],
-      scale: { min: 1, max: 5, labels: ['None', 'Basic', 'Intermediate', 'Advanced', 'Expert'] }
+      rows: ['AWS', 'Google Cloud', 'Microsoft Azure', 'Heroku', 'DigitalOcean', 'Vercel', 'Netlify'],
+      columns: ['None', 'Basic', 'Intermediate', 'Advanced', 'Expert'],
+      type: 'rating'
     },
     required: false
   },
@@ -339,8 +343,9 @@ export const profileQuestions: ProfileQuestion[] = [
     question: 'Rate your proficiency with DevOps and deployment tools',
     type: 'skill_matrix',
     matrix: {
-      items: ['Docker', 'Kubernetes', 'Jenkins', 'GitLab CI/CD', 'GitHub Actions', 'Terraform', 'Ansible', 'Chef', 'Puppet'],
-      scale: { min: 1, max: 5, labels: ['None', 'Basic', 'Intermediate', 'Advanced', 'Expert'] }
+      rows: ['Docker', 'Kubernetes', 'Jenkins', 'GitLab CI/CD', 'GitHub Actions', 'Terraform', 'Ansible', 'Chef', 'Puppet'],
+      columns: ['None', 'Basic', 'Intermediate', 'Advanced', 'Expert'],
+      type: 'rating'
     },
     required: false
   },
@@ -350,8 +355,9 @@ export const profileQuestions: ProfileQuestion[] = [
     question: 'Rate your mobile development experience',
     type: 'skill_matrix',
     matrix: {
-      items: ['React Native', 'Flutter', 'iOS (Swift)', 'Android (Kotlin/Java)', 'Xamarin', 'Ionic', 'Cordova'],
-      scale: { min: 1, max: 5, labels: ['None', 'Basic', 'Intermediate', 'Advanced', 'Expert'] }
+      rows: ['React Native', 'Flutter', 'iOS (Swift)', 'Android (Kotlin/Java)', 'Xamarin', 'Ionic', 'Cordova'],
+      columns: ['None', 'Basic', 'Intermediate', 'Advanced', 'Expert'],
+      type: 'rating'
     },
     required: false
   },
@@ -361,8 +367,9 @@ export const profileQuestions: ProfileQuestion[] = [
     question: 'Rate your experience with testing frameworks',
     type: 'skill_matrix',
     matrix: {
-      items: ['Jest', 'Mocha', 'Jasmine', 'Cypress', 'Selenium', 'PyTest', 'JUnit', 'TestNG', 'Postman'],
-      scale: { min: 1, max: 5, labels: ['None', 'Basic', 'Intermediate', 'Advanced', 'Expert'] }
+      rows: ['Jest', 'Mocha', 'Jasmine', 'Cypress', 'Selenium', 'PyTest', 'JUnit', 'TestNG', 'Postman'],
+      columns: ['None', 'Basic', 'Intermediate', 'Advanced', 'Expert'],
+      type: 'rating'
     },
     required: false
   },
@@ -372,8 +379,9 @@ export const profileQuestions: ProfileQuestion[] = [
     question: 'Rate your version control experience',
     type: 'skill_matrix',
     matrix: {
-      items: ['Git', 'GitHub', 'GitLab', 'Bitbucket', 'SVN', 'Mercurial'],
-      scale: { min: 1, max: 5, labels: ['None', 'Basic', 'Intermediate', 'Advanced', 'Expert'] }
+      rows: ['Git', 'GitHub', 'GitLab', 'Bitbucket', 'SVN', 'Mercurial'],
+      columns: ['None', 'Basic', 'Intermediate', 'Advanced', 'Expert'],
+      type: 'rating'
     },
     required: false
   },
@@ -383,8 +391,9 @@ export const profileQuestions: ProfileQuestion[] = [
     question: 'Rate your data analysis and visualization skills',
     type: 'skill_matrix',
     matrix: {
-      items: ['Excel', 'Tableau', 'Power BI', 'D3.js', 'Matplotlib', 'Seaborn', 'Pandas', 'NumPy', 'SciPy', 'R'],
-      scale: { min: 1, max: 5, labels: ['None', 'Basic', 'Intermediate', 'Advanced', 'Expert'] }
+      rows: ['Excel', 'Tableau', 'Power BI', 'D3.js', 'Matplotlib', 'Seaborn', 'Pandas', 'NumPy', 'SciPy', 'R'],
+      columns: ['None', 'Basic', 'Intermediate', 'Advanced', 'Expert'],
+      type: 'rating'
     },
     required: false
   },
@@ -394,8 +403,9 @@ export const profileQuestions: ProfileQuestion[] = [
     question: 'Rate your machine learning and AI experience',
     type: 'skill_matrix',
     matrix: {
-      items: ['TensorFlow', 'PyTorch', 'Scikit-learn', 'Keras', 'OpenCV', 'NLP', 'Deep Learning', 'Computer Vision'],
-      scale: { min: 1, max: 5, labels: ['None', 'Basic', 'Intermediate', 'Advanced', 'Expert'] }
+      rows: ['TensorFlow', 'PyTorch', 'Scikit-learn', 'Keras', 'OpenCV', 'NLP', 'Deep Learning', 'Computer Vision'],
+      columns: ['None', 'Basic', 'Intermediate', 'Advanced', 'Expert'],
+      type: 'rating'
     },
     required: false
   },
@@ -491,8 +501,9 @@ export const profileQuestions: ProfileQuestion[] = [
     question: 'Do you have management or leadership experience?',
     type: 'experience_matrix',
     matrix: {
-      items: ['Direct reports', 'Team leadership', 'Project management', 'Budget responsibility', 'Cross-functional teams', 'Vendor management'],
-      scale: { min: 0, max: 4, labels: ['None', '1-2 years', '3-5 years', '5-10 years', '10+ years'] }
+      rows: ['Direct reports', 'Team leadership', 'Project management', 'Budget responsibility', 'Cross-functional teams', 'Vendor management'],
+      columns: ['None', '1-2 years', '3-5 years', '5-10 years', '10+ years'],
+      type: 'rating'
     },
     required: false
   },
@@ -570,8 +581,9 @@ export const profileQuestions: ProfileQuestion[] = [
     question: 'Rate your client-facing experience',
     type: 'experience_matrix',
     matrix: {
-      items: ['Customer service', 'Sales presentations', 'Client meetings', 'Account management', 'Public speaking', 'Training/workshops'],
-      scale: { min: 0, max: 4, labels: ['None', 'Basic', 'Intermediate', 'Advanced', 'Expert'] }
+      rows: ['Customer service', 'Sales presentations', 'Client meetings', 'Account management', 'Public speaking', 'Training/workshops'],
+      columns: ['None', 'Basic', 'Intermediate', 'Advanced', 'Expert'],
+      type: 'rating'
     },
     required: false
   },
@@ -969,8 +981,9 @@ export const profileQuestions: ProfileQuestion[] = [
     question: 'Rate your sales and marketing experience',
     type: 'experience_matrix',
     matrix: {
-      items: ['B2B sales', 'B2C sales', 'Digital marketing', 'Content marketing', 'SEO/SEM', 'Social media marketing', 'Email marketing', 'Lead generation', 'CRM systems', 'Market research'],
-      scale: { min: 0, max: 4, labels: ['None', 'Basic', 'Intermediate', 'Advanced', 'Expert'] }
+      rows: ['B2B sales', 'B2C sales', 'Digital marketing', 'Content marketing', 'SEO/SEM', 'Social media marketing', 'Email marketing', 'Lead generation', 'CRM systems', 'Market research'],
+      columns: ['None', 'Basic', 'Intermediate', 'Advanced', 'Expert'],
+      type: 'rating'
     },
     required: false
   },
@@ -980,8 +993,9 @@ export const profileQuestions: ProfileQuestion[] = [
     question: 'Rate your customer service experience',
     type: 'experience_matrix',
     matrix: {
-      items: ['Phone support', 'Email support', 'Live chat', 'In-person service', 'Complaint resolution', 'Technical support', 'Upselling', 'Customer retention', 'CRM usage', 'Service metrics'],
-      scale: { min: 0, max: 4, labels: ['None', 'Basic', 'Intermediate', 'Advanced', 'Expert'] }
+      rows: ['Phone support', 'Email support', 'Live chat', 'In-person service', 'Complaint resolution', 'Technical support', 'Upselling', 'Customer retention', 'CRM usage', 'Service metrics'],
+      columns: ['None', 'Basic', 'Intermediate', 'Advanced', 'Expert'],
+      type: 'rating'
     },
     required: false
   },
@@ -993,8 +1007,9 @@ export const profileQuestions: ProfileQuestion[] = [
     question: 'Rate your communication abilities',
     type: 'skill_matrix',
     matrix: {
-      items: ['Written communication', 'Verbal communication', 'Presentation skills', 'Active listening', 'Interpersonal skills', 'Cross-cultural communication'],
-      scale: { min: 1, max: 5, labels: ['Poor', 'Fair', 'Good', 'Very Good', 'Excellent'] }
+      rows: ['Written communication', 'Verbal communication', 'Presentation skills', 'Active listening', 'Interpersonal skills', 'Cross-cultural communication'],
+      columns: ['Poor', 'Fair', 'Good', 'Very Good', 'Excellent'],
+      type: 'rating'
     },
     required: false
   },
@@ -1004,8 +1019,9 @@ export const profileQuestions: ProfileQuestion[] = [
     question: 'Rate your leadership abilities',
     type: 'skill_matrix',
     matrix: {
-      items: ['Team leadership', 'Decision making', 'Delegation', 'Motivation', 'Conflict resolution', 'Strategic thinking'],
-      scale: { min: 1, max: 5, labels: ['Poor', 'Fair', 'Good', 'Very Good', 'Excellent'] }
+      rows: ['Team leadership', 'Decision making', 'Delegation', 'Motivation', 'Conflict resolution', 'Strategic thinking'],
+      columns: ['Poor', 'Fair', 'Good', 'Very Good', 'Excellent'],
+      type: 'rating'
     },
     required: false
   },
@@ -1015,8 +1031,9 @@ export const profileQuestions: ProfileQuestion[] = [
     question: 'Rate your problem-solving abilities',
     type: 'skill_matrix',
     matrix: {
-      items: ['Analytical thinking', 'Creative problem solving', 'Critical thinking', 'Research skills', 'Troubleshooting', 'Innovation'],
-      scale: { min: 1, max: 5, labels: ['Poor', 'Fair', 'Good', 'Very Good', 'Excellent'] }
+      rows: ['Analytical thinking', 'Creative problem solving', 'Critical thinking', 'Research skills', 'Troubleshooting', 'Innovation'],
+      columns: ['Poor', 'Fair', 'Good', 'Very Good', 'Excellent'],
+      type: 'rating'
     },
     required: false
   },
@@ -1159,8 +1176,9 @@ export const profileQuestions: ProfileQuestion[] = [
     question: 'How would you rate your cultural awareness and diversity experience?',
     type: 'skill_matrix',
     matrix: {
-      items: ['Cross-cultural communication', 'Working with diverse teams', 'International experience', 'Language skills', 'Cultural sensitivity', 'Inclusive practices'],
-      scale: { min: 1, max: 5, labels: ['Limited', 'Basic', 'Moderate', 'Strong', 'Extensive'] }
+      rows: ['Cross-cultural communication', 'Working with diverse teams', 'International experience', 'Language skills', 'Cultural sensitivity', 'Inclusive practices'],
+      columns: ['Limited', 'Basic', 'Moderate', 'Strong', 'Extensive'],
+      type: 'rating'
     },
     required: false
   },
@@ -1170,8 +1188,9 @@ export const profileQuestions: ProfileQuestion[] = [
     question: 'Rate your emotional intelligence abilities',
     type: 'skill_matrix',
     matrix: {
-      items: ['Self-awareness', 'Self-regulation', 'Empathy', 'Social skills', 'Motivation', 'Relationship management'],
-      scale: { min: 1, max: 5, labels: ['Poor', 'Fair', 'Good', 'Very Good', 'Excellent'] }
+      rows: ['Self-awareness', 'Self-regulation', 'Empathy', 'Social skills', 'Motivation', 'Relationship management'],
+      columns: ['Poor', 'Fair', 'Good', 'Very Good', 'Excellent'],
+      type: 'rating'
     },
     required: false
   },
@@ -1409,5 +1428,565 @@ export const profileQuestions: ProfileQuestion[] = [
     type: 'textarea',
     required: false,
     placeholder: 'What unique combination of skills, experiences, or perspectives do you bring?'
+  },
+  
+  // ===== ADDITIONAL COMPREHENSIVE QUESTIONS (116-150) =====
+  {
+    id: 'project_management_experience',
+    category: 'experience',
+    question: 'Do you have project management experience?',
+    type: 'boolean',
+    required: false
+  },
+  {
+    id: 'team_size_managed',
+    category: 'experience',
+    question: 'What is the largest team size you have managed?',
+    type: 'single_select',
+    options: [
+      'No management experience',
+      '1-3 people',
+      '4-7 people',
+      '8-15 people',
+      '16-30 people',
+      '30+ people'
+    ],
+    required: false
+  },
+  {
+    id: 'budget_management',
+    category: 'experience',
+    question: 'Have you managed budgets? If so, what range?',
+    type: 'single_select',
+    options: [
+      'No budget management',
+      'Under $10K',
+      '$10K - $50K',
+      '$50K - $100K',
+      '$100K - $500K',
+      '$500K - $1M',
+      'Over $1M'
+    ],
+    required: false
+  },
+  {
+    id: 'crisis_management',
+    category: 'experience',
+    question: 'Describe your experience handling crisis situations',
+    type: 'textarea',
+    required: false,
+    placeholder: 'Describe how you handled unexpected challenges or crisis situations'
+  },
+  {
+    id: 'cross_functional_collaboration',
+    category: 'skills',
+    question: 'Rate your experience working with cross-functional teams',
+    type: 'skill_matrix',
+    matrix: {
+      rows: [
+        'Engineering teams',
+        'Sales teams',
+        'Marketing teams',
+        'Customer service',
+        'Executive leadership',
+        'External vendors',
+        'International teams'
+      ],
+      columns: ['No Experience', 'Basic', 'Intermediate', 'Advanced', 'Expert'],
+      type: 'rating'
+    },
+    required: false
+  },
+  {
+    id: 'technical_documentation',
+    category: 'skills',
+    question: 'What types of technical documentation have you created?',
+    type: 'multiselect',
+    options: [
+      'API documentation',
+      'User manuals',
+      'Technical specifications',
+      'Process documentation',
+      'Training materials',
+      'Architecture diagrams',
+      'Code comments',
+      'Wiki pages',
+      'Knowledge base articles'
+    ],
+    required: false,
+    allowOther: true
+  },
+  {
+    id: 'cloud_platforms_experience',
+    category: 'skills',
+    question: 'Rate your experience with cloud platforms',
+    type: 'skill_matrix',
+    matrix: {
+      rows: [
+        'Amazon AWS',
+        'Microsoft Azure',
+        'Google Cloud Platform',
+        'IBM Cloud',
+        'Oracle Cloud',
+        'Digital Ocean',
+        'Heroku'
+      ],
+      columns: ['Never Used', 'Basic', 'Intermediate', 'Advanced', 'Expert'],
+      type: 'rating'
+    },
+    required: false
+  },
+  {
+    id: 'database_technologies',
+    category: 'skills',
+    question: 'What database technologies have you worked with?',
+    type: 'skill_matrix',
+    matrix: {
+      rows: [
+        'MySQL',
+        'PostgreSQL',
+        'MongoDB',
+        'Redis',
+        'Elasticsearch',
+        'Oracle',
+        'SQL Server',
+        'Cassandra',
+        'DynamoDB'
+      ],
+      columns: ['Never Used', 'Basic', 'Intermediate', 'Advanced', 'Expert'],
+      type: 'rating'
+    },
+    required: false
+  },
+  {
+    id: 'devops_experience',
+    category: 'skills',
+    question: 'Rate your DevOps and deployment experience',
+    type: 'skill_matrix',
+    matrix: {
+      rows: [
+        'Docker',
+        'Kubernetes',
+        'Jenkins',
+        'GitLab CI/CD',
+        'GitHub Actions',
+        'Terraform',
+        'Ansible',
+        'Monitoring tools'
+      ],
+      columns: ['No Experience', 'Basic', 'Intermediate', 'Advanced', 'Expert'],
+      type: 'rating'
+    },
+    required: false
+  },
+  {
+    id: 'security_awareness',
+    category: 'skills',
+    question: 'Rate your knowledge in cybersecurity areas',
+    type: 'skill_matrix',
+    matrix: {
+      rows: [
+        'Network security',
+        'Application security',
+        'Data encryption',
+        'Identity management',
+        'Penetration testing',
+        'Compliance (GDPR, HIPAA)',
+        'Security auditing'
+      ],
+      columns: ['No Knowledge', 'Basic', 'Intermediate', 'Advanced', 'Expert'],
+      type: 'rating'
+    },
+    required: false
+  },
+  {
+    id: 'data_analysis_tools',
+    category: 'skills',
+    question: 'What data analysis tools have you used?',
+    type: 'multiselect',
+    options: [
+      'Excel/Google Sheets',
+      'SQL',
+      'Python (pandas, numpy)',
+      'R',
+      'Tableau',
+      'Power BI',
+      'Google Analytics',
+      'SPSS',
+      'SAS',
+      'Jupyter Notebooks',
+      'Apache Spark'
+    ],
+    required: false,
+    allowOther: true
+  },
+  {
+    id: 'machine_learning_experience',
+    category: 'skills',
+    question: 'Do you have machine learning experience?',
+    type: 'multiselect',
+    options: [
+      'Supervised learning',
+      'Unsupervised learning',
+      'Deep learning',
+      'Natural language processing',
+      'Computer vision',
+      'Reinforcement learning',
+      'Model deployment',
+      'Feature engineering',
+      'No ML experience'
+    ],
+    required: false
+  },
+  {
+    id: 'business_analysis_skills',
+    category: 'skills',
+    question: 'Rate your business analysis capabilities',
+    type: 'scale',
+    scale: {
+      min: 1,
+      max: 5,
+      minLabel: 'No experience',
+      maxLabel: 'Expert level'
+    },
+    required: false
+  },
+  {
+    id: 'sales_experience',
+    category: 'experience',
+    question: 'Describe your sales experience',
+    type: 'multiselect',
+    options: [
+      'B2B sales',
+      'B2C sales',
+      'Inside sales',
+      'Field sales',
+      'Technical sales',
+      'Account management',
+      'Lead generation',
+      'Sales presentations',
+      'No sales experience'
+    ],
+    required: false
+  },
+  {
+    id: 'negotiation_skills',
+    category: 'skills',
+    question: 'Rate your negotiation skills in different contexts',
+    type: 'skill_matrix',
+    matrix: {
+      rows: [
+        'Salary negotiations',
+        'Vendor negotiations',
+        'Client contracts',
+        'Team conflicts',
+        'Resource allocation',
+        'Deadline negotiations'
+      ],
+      columns: ['No Experience', 'Basic', 'Intermediate', 'Advanced', 'Expert'],
+      type: 'rating'
+    },
+    required: false
+  },
+  {
+    id: 'presentation_experience',
+    category: 'skills',
+    question: 'What types of presentations have you given?',
+    type: 'multiselect',
+    options: [
+      'Technical presentations',
+      'Sales pitches',
+      'Training sessions',
+      'Conference talks',
+      'Board presentations',
+      'Client demos',
+      'Team meetings',
+      'Webinars',
+      'No presentation experience'
+    ],
+    required: false
+  },
+  {
+    id: 'remote_work_skills',
+    category: 'skills',
+    question: 'Rate your remote work capabilities',
+    type: 'skill_matrix',
+    matrix: {
+      rows: [
+        'Video conferencing',
+        'Async communication',
+        'Time management',
+        'Self-motivation',
+        'Digital collaboration',
+        'Remote team building'
+      ],
+      columns: ['Poor', 'Fair', 'Good', 'Very Good', 'Excellent'],
+      type: 'rating'
+    },
+    required: false
+  },
+  {
+    id: 'innovation_experience',
+    category: 'achievements',
+    question: 'Describe your innovation and creative problem-solving experience',
+    type: 'textarea',
+    required: false,
+    placeholder: 'Share examples of innovative solutions or creative approaches you developed'
+  },
+  {
+    id: 'process_improvement',
+    category: 'achievements',
+    question: 'Have you improved processes or workflows? Describe the impact.',
+    type: 'textarea',
+    required: false,
+    placeholder: 'Describe process improvements you made and their measurable impact'
+  },
+  {
+    id: 'cost_savings_achieved',
+    category: 'achievements',
+    question: 'Have you achieved cost savings for your organization?',
+    type: 'single_select',
+    options: [
+      'No cost savings',
+      'Under $1K',
+      '$1K - $10K',
+      '$10K - $50K',
+      '$50K - $100K',
+      '$100K - $500K',
+      'Over $500K'
+    ],
+    required: false
+  },
+  {
+    id: 'quality_improvements',
+    category: 'achievements',
+    question: 'Describe quality improvements you have implemented',
+    type: 'textarea',
+    required: false,
+    placeholder: 'Describe improvements in quality, accuracy, or efficiency you achieved'
+  },
+  {
+    id: 'customer_satisfaction',
+    category: 'achievements',
+    question: 'Do you have experience improving customer satisfaction?',
+    type: 'multiselect',
+    options: [
+      'Customer service improvements',
+      'Product quality enhancements',
+      'User experience optimization',
+      'Support process improvements',
+      'Feedback implementation',
+      'Customer retention strategies',
+      'No customer satisfaction experience'
+    ],
+    required: false
+  },
+  {
+    id: 'strategic_planning',
+    category: 'skills',
+    question: 'Rate your strategic planning experience',
+    type: 'scale',
+    scale: {
+      min: 1,
+      max: 5,
+      minLabel: 'No experience',
+      maxLabel: 'Led strategic initiatives'
+    },
+    required: false
+  },
+  {
+    id: 'market_research',
+    category: 'skills',
+    question: 'What market research methods have you used?',
+    type: 'multiselect',
+    options: [
+      'Surveys',
+      'Focus groups',
+      'Interviews',
+      'Competitive analysis',
+      'User testing',
+      'A/B testing',
+      'Analytics review',
+      'Industry reports',
+      'No market research experience'
+    ],
+    required: false
+  },
+  {
+    id: 'risk_management',
+    category: 'skills',
+    question: 'Describe your risk management experience',
+    type: 'multiselect',
+    options: [
+      'Risk assessment',
+      'Mitigation strategies',
+      'Compliance monitoring',
+      'Crisis prevention',
+      'Insurance evaluation',
+      'Financial risk analysis',
+      'Operational risk',
+      'No risk management experience'
+    ],
+    required: false
+  },
+  {
+    id: 'change_management',
+    category: 'skills',
+    question: 'Have you led organizational change initiatives?',
+    type: 'boolean',
+    required: false
+  },
+  {
+    id: 'vendor_management',
+    category: 'experience',
+    question: 'Rate your vendor/supplier management experience',
+    type: 'scale',
+    scale: {
+      min: 1,
+      max: 5,
+      minLabel: 'No experience',
+      maxLabel: 'Extensive experience'
+    },
+    required: false
+  },
+  {
+    id: 'regulatory_compliance',
+    category: 'skills',
+    question: 'What regulatory frameworks are you familiar with?',
+    type: 'multiselect',
+    options: [
+      'GDPR',
+      'HIPAA',
+      'SOX',
+      'PCI DSS',
+      'ISO 27001',
+      'FISMA',
+      'FDA regulations',
+      'Financial services regulations',
+      'Environmental regulations',
+      'No regulatory experience'
+    ],
+    required: false,
+    allowOther: true
+  },
+  {
+    id: 'performance_metrics',
+    category: 'skills',
+    question: 'What performance metrics have you been responsible for?',
+    type: 'multiselect',
+    options: [
+      'Revenue growth',
+      'Cost reduction',
+      'Customer satisfaction',
+      'Employee retention',
+      'Quality metrics',
+      'Productivity measures',
+      'Safety metrics',
+      'Compliance metrics',
+      'No metrics responsibility'
+    ],
+    required: false,
+    allowOther: true
+  },
+  {
+    id: 'blockchain_experience',
+    category: 'skills',
+    question: 'Do you have blockchain or cryptocurrency experience?',
+    type: 'multiselect',
+    options: [
+      'Smart contracts',
+      'DeFi protocols',
+      'NFT development',
+      'Cryptocurrency trading',
+      'Blockchain architecture',
+      'Web3 development',
+      'Crypto mining',
+      'No blockchain experience'
+    ],
+    required: false
+  },
+  {
+    id: 'iot_experience',
+    category: 'skills',
+    question: 'Rate your Internet of Things (IoT) experience',
+    type: 'skill_matrix',
+    matrix: {
+      rows: [
+        'IoT device programming',
+        'Sensor integration',
+        'IoT platforms',
+        'Edge computing',
+        'IoT security',
+        'Data collection/analysis'
+      ],
+      columns: ['No Experience', 'Basic', 'Intermediate', 'Advanced', 'Expert'],
+      type: 'rating'
+    },
+    required: false
+  },
+  {
+    id: 'game_development',
+    category: 'skills',
+    question: 'Do you have game development experience?',
+    type: 'multiselect',
+    options: [
+      'Unity',
+      'Unreal Engine',
+      'Mobile games',
+      'Web games',
+      'VR/AR games',
+      'Game design',
+      '3D modeling',
+      'Game testing',
+      'No game development'
+    ],
+    required: false
+  },
+  {
+    id: 'accessibility_knowledge',
+    category: 'skills',
+    question: 'Rate your knowledge of accessibility standards',
+    type: 'scale',
+    scale: {
+      min: 1,
+      max: 5,
+      minLabel: 'No knowledge',
+      maxLabel: 'Expert in WCAG/ADA compliance'
+    },
+    required: false
+  },
+  {
+    id: 'international_experience',
+    category: 'experience',
+    question: 'Do you have international work experience?',
+    type: 'multiselect',
+    options: [
+      'Remote international teams',
+      'International travel for work',
+      'Worked abroad',
+      'International clients',
+      'Cross-cultural communication',
+      'Time zone coordination',
+      'Global project management',
+      'No international experience'
+    ],
+    required: false
+  },
+  {
+    id: 'startup_experience',
+    category: 'experience',
+    question: 'Describe your startup or small company experience',
+    type: 'multiselect',
+    options: [
+      'Early-stage startup',
+      'Scale-up company',
+      'Founded a company',
+      'Startup advisor',
+      'Venture capital experience',
+      'Product launch',
+      'Rapid growth environment',
+      'No startup experience'
+    ],
+    required: false
   }
 ];

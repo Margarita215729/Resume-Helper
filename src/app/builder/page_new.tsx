@@ -18,8 +18,8 @@ import {
 } from "lucide-react";
 import type { ResumeData, PersonalInfo, Experience, Education, Project } from "@/types/resume";
 import type { ProfileData } from "@/types/profile";
-import { PDFExportService } from "@/services/pdf-export.service";
-import { DOCXExportService } from "@/services/docx-export.service";
+import { ClientExportService } from "@/services/client-export.service";
+import { ClientAIService } from "@/services/client-ai.service";
 
 // Default data structures
 const defaultPersonalInfo: PersonalInfo = {
@@ -91,17 +91,7 @@ export default function Builder() {
     setJobAnalysis({ isAnalyzing: true, analysis: null, error: null });
 
     try {
-      const response = await fetch('/api/ai/analyze-job', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ jobDescription })
-      });
-
-      if (!response.ok) {
-        throw new Error('Failed to analyze job');
-      }
-
-      const analysis = await response.json();
+      const analysis = await ClientAIService.analyzeJobPosting(jobDescription);
       setJobAnalysis({ isAnalyzing: false, analysis, error: null });
     } catch (error) {
       setJobAnalysis({ 
@@ -123,17 +113,11 @@ export default function Builder() {
         includeCoverLetter: false
       };
 
-      const response = await fetch('/api/ai/generate-resume', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ profileData, options })
+      const generatedResume = await ClientAIService.generateResume(profileData, {
+        template: 'professional',
+        format: 'professional'
       });
-
-      if (!response.ok) {
-        throw new Error('Failed to generate resume');
-      }
-
-      const generatedResume = await response.json();
+      
       setResume(generatedResume);
       setAIGeneration({ isGenerating: false, error: null });
     } catch (error) {
@@ -147,7 +131,7 @@ export default function Builder() {
   // Export Functions
   const exportToPDF = async () => {
     try {
-      await PDFExportService.downloadPDF(resume, `${resume.personalInfo?.fullName || 'resume'}.pdf`);
+      await ClientExportService.exportToPDF(resume, { template: 'professional' });
     } catch (error) {
       console.error('Error exporting to PDF:', error);
       alert('Failed to export PDF. Please try again.');
@@ -156,7 +140,7 @@ export default function Builder() {
 
   const exportToDOCX = async () => {
     try {
-      await DOCXExportService.downloadDOCX(resume, `${resume.personalInfo?.fullName || 'resume'}.docx`);
+      await ClientExportService.exportToDOCX(resume, { template: 'professional' });
     } catch (error) {
       console.error('Error exporting to DOCX:', error);
       alert('Failed to export DOCX. Please try again.');

@@ -1,9 +1,9 @@
 'use client';
 
 import { useState, Suspense } from 'react';
-import { signIn } from 'next-auth/react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
+import { useAuth } from '@/hooks/useAuth';
 
 function SignInForm() {
   const [email, setEmail] = useState('');
@@ -13,6 +13,7 @@ function SignInForm() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const callbackUrl = searchParams.get('callbackUrl') || '/builder';
+  const { signIn } = useAuth();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -20,27 +21,20 @@ function SignInForm() {
     setIsLoading(true);
 
     try {
-      const result = await signIn('credentials', {
-        email,
-        password,
-        redirect: false,
-        callbackUrl,
-      });
+      const success = await signIn(email, password);
 
-      console.log('🔐 Sign in result:', result);
+      console.log('🔐 Sign in result:', success);
 
-      if (result?.error) {
-        console.log('❌ Sign in error:', result.error);
+      if (!success) {
+        console.log('❌ Sign in failed');
         setError('Invalid email or password');
-      } else if (result?.ok) {
+      } else {
         console.log('✅ Sign in successful, redirecting to:', callbackUrl);
         // Force a small delay to ensure session is established
         setTimeout(() => {
           router.push(callbackUrl);
           router.refresh(); // Force a refresh to update session state
         }, 100);
-      } else {
-        setError('Authentication failed. Please try again.');
       }
     } catch (error) {
       console.error('🔥 Sign in error:', error);

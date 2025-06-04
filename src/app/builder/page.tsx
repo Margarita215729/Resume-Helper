@@ -31,6 +31,8 @@ import {
   Loader2
 } from 'lucide-react';
 import type { ResumeData, PersonalInfo, Experience, Education, Skills, Project } from '@/types/resume';
+import { ClientAIService } from '@/services/client-ai.service';
+import { ClientExportService } from '@/services/client-export.service';
 
 const SECTIONS = [
   { id: 'personal', label: 'Personal Info', icon: User },
@@ -115,15 +117,7 @@ export default function ResumeBuilder() {
 
     setIsAnalyzingJob(true);
     try {
-      const response = await fetch('/api/ai/analyze-job', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ jobDescription })
-      });
-
-      if (!response.ok) throw new Error('Failed to analyze job posting');
-
-      const analysis = await response.json();
+      const analysis = await ClientAIService.analyzeJobPosting(jobDescription);
       
       // Show analysis results (you could create a modal for this)
       alert(`Job Analysis Complete!\n\nTitle: ${analysis.title}\nCompany: ${analysis.company}\nMatch Score: ${analysis.matchScore || 'N/A'}\n\nKey Requirements:\n${analysis.requirements?.slice(0, 3).join('\n') || 'None found'}`);
@@ -138,19 +132,14 @@ export default function ResumeBuilder() {
   const generateAIResume = async () => {
     setIsGeneratingResume(true);
     try {
-      const response = await fetch('/api/ai/generate-resume', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          profileData: {}, // You could integrate with profile data here
-          jobDescription: jobDescription || undefined,
-          options: { template, includeSkillsMatrix: true }
-        })
+      // Get saved profile data from localStorage if available
+      const savedProfile = localStorage.getItem('profileData');
+      const profileData = savedProfile ? JSON.parse(savedProfile) : {};
+      
+      const generatedResume = await ClientAIService.generateResume(profileData, {
+        template,
+        format: template
       });
-
-      if (!response.ok) throw new Error('Failed to generate resume');
-
-      const generatedResume = await response.json();
       
       // Update resume data with AI-generated content
       setResumeData(generatedResume);
@@ -168,24 +157,11 @@ export default function ResumeBuilder() {
   const exportResume = async () => {
     setIsExporting(true);
     try {
-      const endpoint = exportFormat === 'pdf' ? '/api/export/pdf' : '/api/export/docx';
-      const response = await fetch(endpoint, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ resumeData, template })
-      });
-
-      if (!response.ok) throw new Error(`Failed to export ${exportFormat.toUpperCase()}`);
-
-      const blob = await response.blob();
-      const url = window.URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      a.href = url;
-      a.download = `resume.${exportFormat}`;
-      document.body.appendChild(a);
-      a.click();
-      window.URL.revokeObjectURL(url);
-      document.body.removeChild(a);
+      if (exportFormat === 'pdf') {
+        await ClientExportService.exportToPDF(resumeData, { template });
+      } else {
+        await ClientExportService.exportToDOCX(resumeData, { template });
+      }
     } catch (error) {
       console.error('Export failed:', error);
       alert(`Failed to export ${exportFormat.toUpperCase()}. Please try again.`);

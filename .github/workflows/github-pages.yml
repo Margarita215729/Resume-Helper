@@ -1,16 +1,14 @@
-name: Deploy to GitHub Pages (DISABLED - Use Azure Container Apps instead)
+name: Deploy to GitHub Pages
 
-# Disabled because the app uses server-side features (API routes, auth, middleware)
-# that are incompatible with GitHub Pages static hosting
 on:
-  # push:
-  #   branches: [ main ]
+  push:
+    branches: [ main ]
   workflow_dispatch:
     inputs:
-      force_enable:
-        description: 'Force enable this workflow (not recommended)'
+      force_deploy:
+        description: 'Force deployment to GitHub Pages'
         required: false
-        default: 'false'
+        default: 'true'
 
 permissions:
   contents: read
@@ -47,12 +45,13 @@ jobs:
         echo "GITHUB_MODEL_ENDPOINT=https://models.github.ai/inference" >> .env.local
         echo "GITHUB_MODEL_NAME=openai/o4-mini" >> .env.local
 
-    - name: Build application
-      run: npm run build
+    - name: Build static application for GitHub Pages
+      run: npm run build:static
       env:
+        NEXT_PUBLIC_BASE_PATH: ""
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        GITHUB_MODEL_ENDPOINT: https://models.github.ai/inference
-        GITHUB_MODEL_NAME: openai/o4-mini
+        GITHUB_MODEL_ENDPOINT: "https://models.github.ai/inference"
+        GITHUB_MODEL_NAME: "gpt-4o-mini"
 
     - name: Upload artifact
       uses: actions/upload-pages-artifact@v3
@@ -60,6 +59,9 @@ jobs:
         path: ./out
 
   deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
     runs-on: ubuntu-latest
     needs: build
     

@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { FileText, Upload, Wand2, Download, Eye, Target, TrendingUp, AlertCircle } from "lucide-react";
 import type { JobAnalysis } from "@/types/profile";
+import { ClientAIService } from "@/services/client-ai.service";
 
 export default function JobMatcher() {
   const [jobDescription, setJobDescription] = useState("");
@@ -10,12 +11,43 @@ export default function JobMatcher() {
   const [isAnalyzing, setIsAnalyzing] = useState(false);
   const [isGenerating, setIsGenerating] = useState(false);
 
-  // Мок-функция для анализа вакансии
+  // Analyze job using AI service
   const analyzeJob = async () => {
+    if (!jobDescription.trim()) return;
+    
     setIsAnalyzing(true);
     
-    // Симуляция анализа
-    setTimeout(() => {
+    try {
+      const aiAnalysis = await ClientAIService.analyzeJobPosting(jobDescription);
+      
+      // Convert AI analysis to JobAnalysis format
+      const mockAnalysis: JobAnalysis = {
+        id: Date.now().toString(),
+        jobTitle: aiAnalysis.title || "Job Position",
+        company: aiAnalysis.company || "Company",
+        jobDescription: jobDescription,
+        requirements: aiAnalysis.requirements || [],
+        preferredSkills: aiAnalysis.preferredSkills || [],
+        jobType: "Full-time",
+        location: aiAnalysis.location || "Not specified",
+        analysis: {
+          matchingSkills: aiAnalysis.requirements?.slice(0, 5) || [],
+          missingSkills: aiAnalysis.preferredSkills?.slice(0, 3) || [],
+          relevantExperiences: ["Based on your profile"],
+          keywordMatches: aiAnalysis.requirements?.slice(0, 3).map((req, idx) => ({
+            keyword: req,
+            importance: 0.9 - (idx * 0.1)
+          })) || [],
+          overallMatchScore: aiAnalysis.matchScore ? aiAnalysis.matchScore / 100 : 0.75,
+          recommendations: aiAnalysis.recommendations || []
+        },
+        createdAt: new Date().toISOString()
+      };
+      
+      setAnalysis(mockAnalysis);
+    } catch (error) {
+      console.error('Job analysis failed:', error);
+      // Fall back to mock analysis if AI fails
       const mockAnalysis: JobAnalysis = {
         id: Date.now().toString(),
         jobTitle: "Frontend Developer",
@@ -36,17 +68,18 @@ export default function JobMatcher() {
           ],
           overallMatchScore: 0.85,
           recommendations: [
-            "Выделить опыт работы с React",
-            "Упомянуть знание TypeScript",
-            "Добавить примеры проектов"
+            "Highlight your React experience",
+            "Mention TypeScript knowledge",
+            "Add project examples"
           ]
         },
         createdAt: new Date().toISOString()
       };
       
       setAnalysis(mockAnalysis);
+    } finally {
       setIsAnalyzing(false);
-    }, 2000);
+    }
   };
 
   const generateResume = async () => {
