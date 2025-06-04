@@ -5,16 +5,25 @@ import { useSession, signIn as nextAuthSignIn, signOut as nextAuthSignOut } from
 import { useClientAuth } from '@/services/client-auth.service';
 
 // Check if we're in a static environment
-const isStaticEnvironment = typeof window !== 'undefined' && 
-  (window.location.hostname === 'username.github.io' || 
-   window.location.hostname.includes('github.io') ||
-   process.env.NODE_ENV === 'production' && !process.env.NEXTAUTH_SECRET);
+const isStaticEnvironment = () => {
+  // During build time, default to client auth if NEXTAUTH_SECRET is not set
+  if (typeof window === 'undefined') {
+    return !process.env.NEXTAUTH_SECRET;
+  }
+  
+  // During runtime, check hostname and environment
+  return (
+    window.location.hostname.includes('github.io') ||
+    window.location.hostname === 'localhost' && !process.env.NEXTAUTH_SECRET ||
+    process.env.NODE_ENV === 'production' && !process.env.NEXTAUTH_SECRET
+  );
+};
 
 export function useAuth() {
   const nextAuthSession = useSession();
   const clientAuth = useClientAuth();
 
-  if (isStaticEnvironment) {
+  if (isStaticEnvironment()) {
     return {
       user: clientAuth.user,
       isLoading: clientAuth.isLoading,

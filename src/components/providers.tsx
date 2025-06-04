@@ -4,12 +4,6 @@ import { SessionProvider } from 'next-auth/react';
 import { ClientAuthProvider } from '@/services/client-auth.service';
 import ErrorBoundary from './error-boundary';
 
-// Check if we're in a static environment
-const isStaticEnvironment = typeof window !== 'undefined' && 
-  (window.location.hostname === 'username.github.io' || 
-   window.location.hostname.includes('github.io') ||
-   process.env.NODE_ENV === 'production' && !process.env.NEXTAUTH_SECRET);
-
 export function Providers({ 
   children, 
   session 
@@ -17,9 +11,13 @@ export function Providers({
   children: React.ReactNode; 
   session?: any;
 }) {
+  // For static builds, always use ClientAuthProvider
+  // This will be determined at runtime anyway
+  const useClientAuth = true; // Force client auth for static builds
+
   return (
     <ErrorBoundary>
-      {isStaticEnvironment ? (
+      {useClientAuth ? (
         <ClientAuthProvider>
           {children}
         </ClientAuthProvider>
