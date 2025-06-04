@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "next dev --turbopack",
     "build": "next build",
-    "build:static": "NEXT_CONFIG_FILE=next.config.static.js next build",
+    "build:static": "./build-static.sh",
     "start": "next start",
     "lint": "next lint",
     "test": "jest",
