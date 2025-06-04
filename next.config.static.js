@@ -3,12 +3,15 @@ const nextConfig = {
   // Static export configuration for GitHub Pages
   output: 'export',
   
+  // Output directory for static files
+  distDir: 'out',
+  
   // Disable server-side features for static hosting
   trailingSlash: true,
   skipTrailingSlashRedirect: true,
   
   // Configure for GitHub Pages subdirectory (if needed)
-  // basePath: '/resume-helper', // Uncomment if using GitHub repo pages
+  // basePath: '/Resume-Helper', // Uncomment if using GitHub repo pages
   
   // Image optimization for static export
   images: {
