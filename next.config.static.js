@@ -7,8 +7,9 @@ const nextConfig = {
   trailingSlash: true,
   skipTrailingSlashRedirect: true,
   
-  // Configure for GitHub Pages subdirectory (if needed)
-  // basePath: '/Resume-Helper', // Uncomment if using GitHub repo pages
+  // Configure for GitHub Pages subdirectory
+  basePath: '/Resume-Helper',
+  assetPrefix: '/Resume-Helper/',
   
   // Image optimization for static export
   images: {
