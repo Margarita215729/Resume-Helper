@@ -46,7 +46,25 @@ jobs:
         echo "GITHUB_MODEL_NAME=openai/o4-mini" >> .env.local
 
     - name: Build static application for GitHub Pages
-      run: npm run build:static
+      run: |
+        npm run build:static
+        echo "Checking build output..."
+        ls -la ./
+        if [ ! -d "./out" ]; then
+          echo "out directory not found, checking for alternative locations..."
+          if [ -d "./.next" ]; then
+            echo "Found .next directory, copying static export..."
+            mkdir -p ./out
+            if [ -d "./.next/static" ]; then
+              mkdir -p ./out/_next
+              cp -r ./.next/static ./out/_next/
+            fi
+            # Copy any generated HTML files
+            find . -maxdepth 1 -name "*.html" -exec cp {} ./out/ \; 2>/dev/null || true
+          fi
+        fi
+        echo "Final contents of out directory:"
+        ls -la ./out/ || echo "out directory still not found"
       env:
         NEXT_PUBLIC_BASE_PATH: ""
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
