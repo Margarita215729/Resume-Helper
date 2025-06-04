@@ -3,9 +3,6 @@ const nextConfig = {
   // Static export configuration for GitHub Pages
   output: 'export',
   
-  // Output directory for static files
-  distDir: 'out',
-  
   // Disable server-side features for static hosting
   trailingSlash: true,
   skipTrailingSlashRedirect: true,
