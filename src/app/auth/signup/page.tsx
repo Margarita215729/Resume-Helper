@@ -4,8 +4,17 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { useAuth } from '@/hooks/useAuth';
+import { ClientOnly } from '@/components/client-only';
 
 export default function SignUpPage() {
+  return (
+    <ClientOnly>
+      <SignUpContent />
+    </ClientOnly>
+  );
+}
+
+function SignUpContent() {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -27,6 +36,11 @@ export default function SignUpPage() {
     setIsLoading(true);
 
     try {
+      if (!signUp) {
+        setError('Sign up functionality is not available.');
+        return;
+      }
+
       const success = await signUp(name, email, password);
 
       if (success) {
