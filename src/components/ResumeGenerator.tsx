@@ -5,7 +5,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Input } from '@/components/ui/input'
 import { Textarea } from '@/components/ui/textarea'
 import { useApp } from '@/context/AppContext'
-import { JobPosting } from '@/types/resume'
+import { JobPosting, QuestionnaireResponse } from '@/types/resume'
 import { useState } from 'react'
 
 export default function ResumeGenerator() {
@@ -23,10 +23,46 @@ export default function ResumeGenerator() {
         setIsAnalyzing(true)
 
         try {
-            // Simulate AI analysis - в реальном приложении здесь будет вызов к AI API
-            await new Promise(resolve => setTimeout(resolve, 2000))
+            // Real AI analysis using GitHub Models API
+            const response = await fetch('/api/generate-resume', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    jobPostingText,
+                    userProfile: state.questionnaireData
+                }),
+            })
 
-            // Extract key information from job posting
+            if (!response.ok) {
+                throw new Error(`API request failed: ${response.status}`)
+            }
+
+            const result = await response.json()
+
+            if (result.success) {
+                // Set analyzed job data
+                const jobData: JobPosting = {
+                    title: result.data.jobAnalysis.title,
+                    company: companyName || result.data.jobAnalysis.company,
+                    description: jobPostingText,
+                    requirements: result.data.jobAnalysis.requirements || [],
+                    preferredSkills: result.data.jobAnalysis.skills || [],
+                    location: result.data.jobAnalysis.location
+                }
+
+                setAnalyzedJob(jobData)
+                setGeneratedResume(result.data.tailoredResume)
+                setCoverLetter(result.data.coverLetter)
+            } else {
+                throw new Error(result.error || 'Failed to analyze job posting')
+            }
+
+        } catch (error) {
+            console.error('Error analyzing job posting:', error)
+
+            // Fallback to mock analysis if AI fails
             const mockAnalysis: JobPosting = {
                 title: extractJobTitle(jobPostingText),
                 company: companyName || extractCompanyName(jobPostingText),
@@ -45,9 +81,6 @@ export default function ResumeGenerator() {
             // Generate cover letter
             const coverLetterText = generateCoverLetter(mockAnalysis, state.questionnaireData)
             setCoverLetter(coverLetterText)
-
-        } catch (error) {
-            console.error('Error analyzing job posting:', error)
         } finally {
             setIsAnalyzing(false)
         }
@@ -102,7 +135,7 @@ export default function ResumeGenerator() {
         return locationMatch?.[0] || 'Location not specified'
     }
 
-    const generateTailoredResume = (job: JobPosting, questionnaireData: any[]): string => {
+    const generateTailoredResume = (job: JobPosting, questionnaireData: QuestionnaireResponse[]): string => {
         // Match user's skills with job requirements
         const relevantSkills = questionnaireData
             .filter(q => q.category === 'Technical Skills' || q.category === 'Soft Skills')
@@ -132,7 +165,7 @@ ${relevantSkills}
 *This resume has been tailored specifically for the ${job.title} position at ${job.company}*`
     }
 
-    const generateCoverLetter = (job: JobPosting, questionnaireData: any[]): string => {
+    const generateCoverLetter = (job: JobPosting, questionnaireData: QuestionnaireResponse[]): string => {
         const name = questionnaireData.find(q => q.question.includes('full name'))?.answer || 'Your Name'
         const experience = questionnaireData.find(q => q.question.includes('professional background'))?.answer || ''
 
@@ -179,7 +212,7 @@ ${name}`
                 <CardHeader>
                     <CardTitle>🚀 AI-Powered Resume Generator</CardTitle>
                     <CardDescription>
-                        Paste a job posting and we'll create a tailored resume and cover letter for you
+                        Paste a job posting and we&apos;ll create a tailored resume and cover letter for you
                     </CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-4">
