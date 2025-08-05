@@ -121,6 +121,76 @@ src/
 └── types/               # TypeScript definitions
 ```
 
+## 🧪 Testing
+
+### Manual Testing Workflow
+
+1. **Complete Profile**:
+   - Navigate to <http://localhost:3000>
+   - Click "Start Questionnaire"
+   - Fill out comprehensive profile (27+ questions)
+   - Verify progress tracking and navigation
+
+2. **Generate Resume**:
+   - Go to "Try Generator"
+   - Use this sample job posting:
+
+```
+Senior Frontend Developer at TechCorp
+San Francisco, CA
+
+Requirements:
+- 5+ years React.js experience
+- TypeScript proficiency
+- Next.js framework knowledge
+- State management (Redux/Context)
+- Modern CSS frameworks
+- Testing frameworks experience
+- CS degree preferred
+
+We offer competitive salary, remote work options, and excellent benefits.
+```
+
+3. **Verify Features**:
+   - Check AI job analysis results
+   - Review generated resume quality
+   - Test copy-to-clipboard functionality
+   - Verify error handling and fallback systems
+
+### Expected Results
+
+- ✅ Job posting analysis extracts key requirements
+- ✅ Resume highlights relevant skills from your profile
+- ✅ Cover letter personalizes content for the specific role
+- ✅ Copy buttons work for both resume and cover letter
+- ✅ Error messages appear for invalid inputs
+- ✅ Loading states show during AI processing
+
+## 🔧 Environment Variables
+
+Copy `.env.example` to `.env.local` and configure:
+
+```bash
+# GitHub Models API (optional - has fallback)
+GITHUB_TOKEN=your_github_token_here
+GITHUB_MODEL_ENDPOINT=https://models.github.ai/inference
+GITHUB_MODEL_NAME=openai/o4-mini
+
+# Next.js
+NODE_ENV=development
+NEXTAUTH_SECRET=your_secret_here
+NEXTAUTH_URL=http://localhost:3000
+```
+
+## 📊 Current Status
+
+✅ **MVP Complete** - Core functionality working
+✅ **Error Handling** - Robust fallback systems  
+✅ **UX Improvements** - Loading states, success/error messages
+✅ **Copy Functionality** - Easy export for immediate use
+⚠️ **PDF Export** - Planned for Phase 2
+⚠️ **User Accounts** - Planned for Phase 3
+
 ---
 
 **Made with ❤️ for job seekers everywhere** 🌟
