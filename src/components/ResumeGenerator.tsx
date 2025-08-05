@@ -16,11 +16,29 @@ export default function ResumeGenerator() {
     const [analyzedJob, setAnalyzedJob] = useState<JobPosting | null>(null)
     const [generatedResume, setGeneratedResume] = useState<string | null>(null)
     const [coverLetter, setCoverLetter] = useState<string | null>(null)
+    const [error, setError] = useState<string | null>(null)
+    const [success, setSuccess] = useState(false)
+    const [copySuccess, setCopySuccess] = useState<string | null>(null)
+
+    const copyToClipboard = async (text: string, type: 'resume' | 'cover-letter') => {
+        try {
+            await navigator.clipboard.writeText(text)
+            setCopySuccess(type)
+            setTimeout(() => setCopySuccess(null), 2000)
+        } catch (err) {
+            console.error('Failed to copy text: ', err)
+        }
+    }
 
     const analyzeJobPosting = async () => {
-        if (!jobPostingText.trim()) return
+        if (!jobPostingText.trim()) {
+            setError('Please enter a job posting text')
+            return
+        }
 
         setIsAnalyzing(true)
+        setError(null)
+        setSuccess(false)
 
         try {
             // Real AI analysis using GitHub Models API
@@ -55,12 +73,14 @@ export default function ResumeGenerator() {
                 setAnalyzedJob(jobData)
                 setGeneratedResume(result.data.tailoredResume)
                 setCoverLetter(result.data.coverLetter)
+                setSuccess(true)
             } else {
                 throw new Error(result.error || 'Failed to analyze job posting')
             }
 
         } catch (error) {
             console.error('Error analyzing job posting:', error)
+            setError('AI service temporarily unavailable. Using fallback analysis.')
 
             // Fallback to mock analysis if AI fails
             const mockAnalysis: JobPosting = {
@@ -81,6 +101,7 @@ export default function ResumeGenerator() {
             // Generate cover letter
             const coverLetterText = generateCoverLetter(mockAnalysis, state.questionnaireData)
             setCoverLetter(coverLetterText)
+            setSuccess(true)
         } finally {
             setIsAnalyzing(false)
         }
@@ -246,6 +267,36 @@ ${name}`
                     >
                         {isAnalyzing ? 'Analyzing Job Posting...' : 'Generate Tailored Resume & Cover Letter'}
                     </Button>
+
+                    {/* Error Message */}
+                    {error && (
+                        <div className="bg-red-50 border border-red-200 rounded-lg p-4">
+                            <div className="flex">
+                                <div className="flex-shrink-0">
+                                    <span className="text-red-500">⚠️</span>
+                                </div>
+                                <div className="ml-3">
+                                    <p className="text-sm text-red-700">{error}</p>
+                                </div>
+                            </div>
+                        </div>
+                    )}
+
+                    {/* Success Message */}
+                    {success && (
+                        <div className="bg-green-50 border border-green-200 rounded-lg p-4">
+                            <div className="flex">
+                                <div className="flex-shrink-0">
+                                    <span className="text-green-500">✅</span>
+                                </div>
+                                <div className="ml-3">
+                                    <p className="text-sm text-green-700">
+                                        Resume and cover letter generated successfully!
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    )}
                 </CardContent>
             </Card>
 
@@ -292,7 +343,12 @@ ${name}`
                             </div>
                             <div className="mt-4 space-x-2">
                                 <Button onClick={exportToPDF}>Download PDF</Button>
-                                <Button variant="outline">Edit Resume</Button>
+                                <Button
+                                    variant="outline"
+                                    onClick={() => copyToClipboard(generatedResume!, 'resume')}
+                                >
+                                    {copySuccess === 'resume' ? '✅ Copied!' : '📋 Copy Resume'}
+                                </Button>
                             </div>
                         </CardContent>
                     </Card>
@@ -310,7 +366,12 @@ ${name}`
                             </div>
                             <div className="mt-4 space-x-2">
                                 <Button onClick={exportToPDF}>Download PDF</Button>
-                                <Button variant="outline">Edit Cover Letter</Button>
+                                <Button
+                                    variant="outline"
+                                    onClick={() => copyToClipboard(coverLetter!, 'cover-letter')}
+                                >
+                                    {copySuccess === 'cover-letter' ? '✅ Copied!' : '📋 Copy Letter'}
+                                </Button>
                             </div>
                         </CardContent>
                     </Card>
