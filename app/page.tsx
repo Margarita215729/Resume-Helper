@@ -177,6 +177,27 @@ export default function Home() {
                                         </Button>
                                     </Link>
                                 </div>
+
+                                {/* Profile Management */}
+                                <div className="mt-4">
+                                    <Link href="/profiles">
+                                        <Button size="sm" variant="outline" className="border-blue-200 text-blue-100 hover:bg-blue-100 hover:text-blue-600">
+                                            📁 Manage Profiles
+                                        </Button>
+                                    </Link>
+                                </div>
+
+                                {/* Phase 2 Features */}
+                                <div className="mt-6 pt-6 border-t border-blue-200">
+                                    <p className="text-blue-100 text-sm mb-3">🚀 Phase 2 Features:</p>
+                                    <div className="space-x-2">
+                                        <Link href="/pdf-test">
+                                            <Button size="sm" variant="outline" className="border-blue-200 text-blue-100 hover:bg-blue-100 hover:text-blue-600">
+                                                🧪 Test PDF Generator
+                                            </Button>
+                                        </Link>
+                                    </div>
+                                </div>
                             </CardContent>
                         </Card>
                     </div>
