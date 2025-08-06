@@ -5,6 +5,8 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Input } from '@/components/ui/input'
 import { Textarea } from '@/components/ui/textarea'
 import { useApp } from '@/context/AppContext'
+import { PDFGenerator, PDFOptions } from '@/lib/pdf-generator'
+import { saveDocument } from '@/lib/storage'
 import { JobPosting, QuestionnaireResponse } from '@/types/resume'
 import { useState } from 'react'
 
@@ -19,6 +21,12 @@ export default function ResumeGenerator() {
     const [error, setError] = useState<string | null>(null)
     const [success, setSuccess] = useState(false)
     const [copySuccess, setCopySuccess] = useState<string | null>(null)
+    const [isExporting, setIsExporting] = useState<string | null>(null)
+    const [pdfOptions, setPdfOptions] = useState<PDFOptions>({
+        template: 'classic',
+        fontSize: 'medium',
+        colorScheme: 'black-white'
+    })
 
     const copyToClipboard = async (text: string, type: 'resume' | 'cover-letter') => {
         try {
@@ -204,9 +212,71 @@ Best regards,
 ${name}`
     }
 
-    const exportToPDF = () => {
-        // В реальном приложении здесь будет генерация PDF
-        alert('PDF export functionality will be implemented with jsPDF')
+    const exportToPDF = async (type: 'resume' | 'cover-letter') => {
+        if (!analyzedJob || (!generatedResume && !coverLetter)) {
+            setError('No content available for export')
+            return
+        }
+
+        setIsExporting(type)
+        setError(null)
+
+        try {
+            const pdfGenerator = new PDFGenerator(pdfOptions)
+            const name = state.questionnaireData.find(q => q.question.includes('full name'))?.answer || 'Your Name'
+
+            let filename: string
+            let pdfBlob: Blob
+
+            if (type === 'resume' && generatedResume) {
+                // Generate resume PDF
+                pdfBlob = pdfGenerator.generateResumePDF(generatedResume, state.questionnaireData, analyzedJob.title)
+                filename = `${name.replace(/\s+/g, '_')}_Resume_${analyzedJob.company.replace(/\s+/g, '_')}.pdf`
+
+                // Save to localStorage if profile exists
+                if (state.currentProfile) {
+                    saveDocument({
+                        type: 'resume',
+                        title: `Resume for ${analyzedJob.title}`,
+                        content: generatedResume,
+                        jobTitle: analyzedJob.title,
+                        company: analyzedJob.company,
+                        profileId: state.currentProfile.id
+                    })
+                }
+            } else if (type === 'cover-letter' && coverLetter) {
+                // Generate cover letter PDF
+                pdfBlob = pdfGenerator.generateCoverLetterPDF(coverLetter, state.questionnaireData, analyzedJob)
+                filename = `${name.replace(/\s+/g, '_')}_CoverLetter_${analyzedJob.company.replace(/\s+/g, '_')}.pdf`
+
+                // Save to localStorage if profile exists
+                if (state.currentProfile) {
+                    saveDocument({
+                        type: 'cover-letter',
+                        title: `Cover Letter for ${analyzedJob.title}`,
+                        content: coverLetter,
+                        jobTitle: analyzedJob.title,
+                        company: analyzedJob.company,
+                        profileId: state.currentProfile.id
+                    })
+                }
+            } else {
+                throw new Error('Invalid export type or missing content')
+            }
+
+            // Download the PDF
+            pdfGenerator.downloadPDF(pdfBlob, filename)
+
+            // Show success message
+            setSuccess(true)
+            setTimeout(() => setSuccess(false), 3000)
+
+        } catch (error) {
+            console.error('PDF export error:', error)
+            setError('Failed to export PDF. Please try again.')
+        } finally {
+            setIsExporting(null)
+        }
     }
 
     if (!state.isOnboardingComplete) {
@@ -328,6 +398,73 @@ ${name}`
                 </Card>
             )}
 
+            {(generatedResume || coverLetter) && (
+                <Card className="mb-6">
+                    <CardHeader>
+                        <CardTitle>🎨 PDF Export Options</CardTitle>
+                        <CardDescription>
+                            Customize your PDF appearance before downloading
+                        </CardDescription>
+                    </CardHeader>
+                    <CardContent>
+                        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                            <div>
+                                <label className="block text-sm font-medium text-gray-700 mb-2">
+                                    Template
+                                </label>
+                                <select
+                                    value={pdfOptions.template}
+                                    onChange={(e) => setPdfOptions(prev => ({
+                                        ...prev,
+                                        template: e.target.value as PDFOptions['template']
+                                    }))}
+                                    className="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                                >
+                                    <option value="classic">📄 Classic</option>
+                                    <option value="modern">✨ Modern</option>
+                                    <option value="ats-optimized">🤖 ATS-Optimized</option>
+                                    <option value="creative">🎨 Creative</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label className="block text-sm font-medium text-gray-700 mb-2">
+                                    Font Size
+                                </label>
+                                <select
+                                    value={pdfOptions.fontSize}
+                                    onChange={(e) => setPdfOptions(prev => ({
+                                        ...prev,
+                                        fontSize: e.target.value as PDFOptions['fontSize']
+                                    }))}
+                                    className="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                                >
+                                    <option value="small">Small (10pt)</option>
+                                    <option value="medium">Medium (12pt)</option>
+                                    <option value="large">Large (14pt)</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label className="block text-sm font-medium text-gray-700 mb-2">
+                                    Color Scheme
+                                </label>
+                                <select
+                                    value={pdfOptions.colorScheme}
+                                    onChange={(e) => setPdfOptions(prev => ({
+                                        ...prev,
+                                        colorScheme: e.target.value as PDFOptions['colorScheme']
+                                    }))}
+                                    className="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                                >
+                                    <option value="black-white">⚫ Black & White</option>
+                                    <option value="blue-accent">🔵 Blue Accent</option>
+                                    <option value="professional">💼 Professional</option>
+                                </select>
+                            </div>
+                        </div>
+                    </CardContent>
+                </Card>
+            )}
+
             {generatedResume && (
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                     <Card>
@@ -342,7 +479,12 @@ ${name}`
                                 <pre className="whitespace-pre-wrap text-sm">{generatedResume}</pre>
                             </div>
                             <div className="mt-4 space-x-2">
-                                <Button onClick={exportToPDF}>Download PDF</Button>
+                                <Button
+                                    onClick={() => exportToPDF('resume')}
+                                    disabled={isExporting === 'resume'}
+                                >
+                                    {isExporting === 'resume' ? 'Generating PDF...' : '📄 Download PDF'}
+                                </Button>
                                 <Button
                                     variant="outline"
                                     onClick={() => copyToClipboard(generatedResume!, 'resume')}
@@ -365,7 +507,12 @@ ${name}`
                                 <pre className="whitespace-pre-wrap text-sm">{coverLetter}</pre>
                             </div>
                             <div className="mt-4 space-x-2">
-                                <Button onClick={exportToPDF}>Download PDF</Button>
+                                <Button
+                                    onClick={() => exportToPDF('cover-letter')}
+                                    disabled={isExporting === 'cover-letter'}
+                                >
+                                    {isExporting === 'cover-letter' ? 'Generating PDF...' : '📄 Download PDF'}
+                                </Button>
                                 <Button
                                     variant="outline"
                                     onClick={() => copyToClipboard(coverLetter!, 'cover-letter')}

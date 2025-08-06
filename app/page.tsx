@@ -196,6 +196,11 @@ export default function Home() {
                                                 🧪 Test PDF Generator
                                             </Button>
                                         </Link>
+                                        <Link href="/documents">
+                                            <Button size="sm" variant="outline" className="border-blue-200 text-blue-100 hover:bg-blue-100 hover:text-blue-600">
+                                                📚 Document History
+                                            </Button>
+                                        </Link>
                                     </div>
                                 </div>
                             </CardContent>
